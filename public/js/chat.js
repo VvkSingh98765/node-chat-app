@@ -1,5 +1,5 @@
 const socket=io()
-const audioElement=new Audio('./audio/audio_1.wav')
+
 
 //Elements
 const $messageForm=document.querySelector('#message-form')
@@ -27,6 +27,7 @@ socket.on('message',(message)=>{
         createdAt:dayjs(message.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend',html)
+    playAudio('incoming')
 })
 
 socket.on('locationMessage',(location)=>{
@@ -37,6 +38,7 @@ socket.on('locationMessage',(location)=>{
         createdAt:dayjs(location.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend',html)
+    playAudio('incoming')
 
 })
 
@@ -71,7 +73,7 @@ $messageForm.addEventListener('submit',(e)=>{
             console.log(error)
         }else{
             console.log('The message has been delivered')
-            audioElement.play()
+            playAudio('outgoing')
         }
         
     })
@@ -92,13 +94,13 @@ $sendLocationButton.addEventListener('click',()=>{
         const lat=position.coords.latitude
         const long=position.coords.longitude
         //console.log(lat,long)
-        socket.emit('sendLocation',{
+        socket.emit('sendLocation',{    
             lat,
             long
         },()=>{
             $sendLocationButton.removeAttribute('disabled')
             console.log('Location Shared')
-            audioElement.play()
+            playAudio('outgoing')
         })
 
     })
@@ -110,6 +112,7 @@ socket.emit('join',{username,room},(error)=>{
         alert(error)
         location.href="/"
     }
+    
 })
 
 
