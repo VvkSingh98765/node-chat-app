@@ -50,11 +50,12 @@ io.on('connection', (socket) => {
 
     })
 
-    //event handle for sending locations
+    //event handler for sending locations
     socket.on('sendLocation', (data, callback) => {
 
         //get user based on the socket id - which is unique for each client/connection
         const user = getUser(socket.id)
+    
 
         //proceed if user is defined
         if (user) {

@@ -29,8 +29,9 @@ socket.on('message',(message)=>{
 })
 
 socket.on('locationMessage',(location)=>{
+
     const html=Mustache.render(locationTemplate,{
-        username,
+        username:location.username,
         url:location.url,
         createdAt:dayjs(location.createdAt).format('h:mm a')
     })
