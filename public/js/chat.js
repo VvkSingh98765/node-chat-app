@@ -1,4 +1,5 @@
 const socket=io()
+const audioElement=new Audio('./audio/audio_1.wav')
 
 //Elements
 const $messageForm=document.querySelector('#message-form')
@@ -70,6 +71,7 @@ $messageForm.addEventListener('submit',(e)=>{
             console.log(error)
         }else{
             console.log('The message has been delivered')
+            audioElement.play()
         }
         
     })
@@ -96,6 +98,7 @@ $sendLocationButton.addEventListener('click',()=>{
         },()=>{
             $sendLocationButton.removeAttribute('disabled')
             console.log('Location Shared')
+            audioElement.play()
         })
 
     })
