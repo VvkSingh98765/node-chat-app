@@ -16,6 +16,33 @@ const sidebarTemplate=document.querySelector('#sidebar-template').innerHTML
 //options
 const {username,room}=Qs.parse(location.search,{ignoreQueryPrefix:true})
 
+const autoScroll=()=>{
+
+    //New Message element - it is the last element child of our messages div, which we inserted 
+    const $newMessage=$messages.lastElementChild
+
+    //Height of the new message- contains everything margin,content etc
+    const newMessageStyles=getComputedStyle($newMessage)
+    console.log(newMessageStyles)
+    const newMessageMargin=parseInt(newMessageStyles.marginBottom)
+    const newMessageHeight=$newMessage.offsetHeight+newMessageMargin //gives total height => margin +standard content
+
+    //visible height - height which is visible to us on our screen
+    const visibleHeight=$messages.offsetHeight
+
+    //height of messages container - total height available for our container
+    const containerHeight=$messages.scrollHeight
+
+    //how far have we scrolled?
+    const scrollOffset = $messages.scrollTop + visibleHeight
+
+    if(containerHeight - newMessageHeight <= scrollOffset){
+        $messages.scrollTop=$messages.scrollHeight
+    }
+
+
+}
+
 
 //Listeners
 socket.on('message',(message)=>{
@@ -27,7 +54,8 @@ socket.on('message',(message)=>{
         createdAt:dayjs(message.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend',html)
-    playAudio('incoming')
+   // playAudio('incoming')
+    autoScroll()
 })
 
 socket.on('locationMessage',(location)=>{
@@ -38,7 +66,8 @@ socket.on('locationMessage',(location)=>{
         createdAt:dayjs(location.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend',html)
-    playAudio('incoming')
+   // playAudio('incoming')
+    autoScroll()
 
 })
 
@@ -107,6 +136,7 @@ $sendLocationButton.addEventListener('click',()=>{
 
 })
 
+//As soon as chat.js file is loaded ,this event is emmitted
 socket.emit('join',{username,room},(error)=>{
     if(error){
         alert(error)

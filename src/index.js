@@ -39,7 +39,8 @@ io.on('connection', (socket) => {
             //remove profanity using thir party bad-words library
             const filter = new Filter()
             if (filter.isProfane(message)) {
-                return callback('Profanity is not allowed')
+                message=filter.clean(message)
+                //return callback('Profanity is not allowed')
             }
 
             //emit message only to the room in which our user has been added
@@ -70,7 +71,7 @@ io.on('connection', (socket) => {
     //event handler for joining
     socket.on('join', ({ username, room }, callback) => {
 
-        //adding user to the array, by calling function from users.js
+        //adding user to the array, by calling function from users.js ,gets back an object with two properties.
         const { user, error } = addUser({ id: socket.id, username, room })
 
 

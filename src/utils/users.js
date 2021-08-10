@@ -1,5 +1,7 @@
 const users=[]
 
+//this method -returns an object with two possible properties at one time, it will contain only one of the property either an error or
+// a user, not both
 const addUser=({id,username,room})=>{
 
     //clean the data
@@ -30,10 +32,11 @@ const addUser=({id,username,room})=>{
     //Store User
     const user={id,username,room}
     users.push(user)
-    return {user}
+    return {user}//returns an object with user as one of its properties -using es6 destructuting property
 
 }
 
+//returns a user after removing it.
 const removeUser=(id)=>{
     const index=users.findIndex((user)=>user.id===id)
 
@@ -42,11 +45,12 @@ const removeUser=(id)=>{
     }
     
 }
-
+//returns a user
 const getUser=(id)=>{
     return users.find((user)=>user.id===id)
 }
 
+//returns an array of users
 const getUsersInRoom=(room)=>{
     room=room.trim().toLowerCase()
     let array=[]
